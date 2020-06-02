@@ -154,7 +154,7 @@ fn create_widget_test<WIDGET>(model_param: WIDGET::ModelParam) -> (Component<WID
 {
     let (component, widget, relm) = create_widget::<WIDGET>(model_param);
     let widgets = widget.get_widgets();
-    init_component::<WIDGET>(component.stream(), widget, &relm);
+    init_component::<WIDGET>(component.owned_stream(), widget, &relm);
     (component, widgets)
 }
 
@@ -166,7 +166,7 @@ pub fn create_component<CHILDWIDGET>(model_param: CHILDWIDGET::ModelParam)
           CHILDWIDGET::Msg: DisplayVariant + 'static,
 {
     let (component, widget, child_relm) = create_widget::<CHILDWIDGET>(model_param);
-    init_component::<CHILDWIDGET>(component.stream(), widget, &child_relm);
+    init_component::<CHILDWIDGET>(component.owned_stream(), widget, &child_relm);
     component
 }
 
@@ -180,7 +180,7 @@ pub fn create_container<CHILDWIDGET>(model_param: CHILDWIDGET::ModelParam)
     let (component, widget, child_relm) = create_widget::<CHILDWIDGET>(model_param);
     let container = widget.container().clone();
     let containers = widget.other_containers();
-    init_component::<CHILDWIDGET>(component.stream(), widget, &child_relm);
+    init_component::<CHILDWIDGET>(component.owned_stream(), widget, &child_relm);
     ContainerComponent::new(component, container, containers)
 }
 
@@ -274,7 +274,7 @@ pub fn init<WIDGET>(model_param: WIDGET::ModelParam) -> Result<Component<WIDGET>
           WIDGET::Msg: DisplayVariant + 'static
 {
     let (component, widget, relm) = create_widget::<WIDGET>(model_param);
-    init_component::<WIDGET>(component.stream(), widget, &relm);
+    init_component::<WIDGET>(component.owned_stream(), widget, &relm);
     Ok(component)
 }
 
